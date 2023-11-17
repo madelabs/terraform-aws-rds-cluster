@@ -1,0 +1,17 @@
+name: terraform
+run-name: terraform action ${{ github.event.pull_request.title }}
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  validate-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Perform Terraform Init & Validate Check
+        run: |
+          terraform init
+          terraform validate
