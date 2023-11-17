@@ -1,0 +1,26 @@
+@startuml terraform-aws-rds-cluster
+!include <logos/github-icon>
+!define AWSPuml https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v15.0/dist
+!include AWSPuml/AWSCommon.puml
+!include AWSPuml/SecurityIdentityCompliance/SecretsManager.puml
+!include AWSPuml/AWSSimplified.puml
+!include AWSPuml/Groups/all.puml
+!include AWSPuml/SecurityIdentityCompliance/all.puml
+!include AWSPuml/DeveloperTools/CodeBuild.puml
+!include AWSPuml/Database/RDSMultiAZDBCluster.puml
+!include AWSPuml/Database/AuroraInstance.puml
+!include AWSPuml/ManagementGovernance/TrustedAdvisorChecklist.puml
+
+AWSCloudGroup(cloud, "AWS")  {
+  GenericGroup(RDS, "RDS") {
+    RDSMultiAZDBCluster(cluster,"Aurora Cluster","")
+    AuroraInstance(instance,"Aurora Instances","")
+    TrustedAdvisorChecklist(cpgroup, "Cluster Parameters", "")
+    TrustedAdvisorChecklist(dbpgroup, "Instances Parameters", "")
+  }
+
+  GenericGroup(secret, "Secrets Manager") {
+    SecretsManager(a,"root user credentials","sss")
+  }
+}
+@enduml

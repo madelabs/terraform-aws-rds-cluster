@@ -1,0 +1,46 @@
+name: auto-release
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  auto-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Check if tag is on main branch
+        id: check-main
+        run: |
+          git fetch --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+          TAG_ON_MAIN=false
+          if git merge-base --is-ancestor ${{ github.sha }} origin/main; then
+            TAG_ON_MAIN=true
+          fi
+          echo "TAG_ON_MAIN=$TAG_ON_MAIN" >> $GITHUB_ENV
+        
+      - name: Extract Changelog Entry
+        run: |
+          CURRENT_TAG=${GITHUB_REF##*/}
+          CHANGELOG_PATH=CHANGELOG.md
+          CHANGELOG_CONTENT=$(sed -n "/## \[$CURRENT_TAG\]/,/^## \[/p" $CHANGELOG_PATH | sed '$d')
+          echo "CHANGELOG_CONTENT<<EOF" >> $GITHUB_ENV
+          echo "$CHANGELOG_CONTENT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Create Release with Changelog Entry
+        if: env.TAG_ON_MAIN == 'true'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: './*'
+          body: ${{ env.CHANGELOG_CONTENT }}
+
+
+
+
