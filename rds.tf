@@ -48,6 +48,11 @@ resource "aws_rds_cluster" "primary" {
   vpc_security_group_ids              = [var.aurora_security_group_id]
   iam_database_authentication_enabled = var.iam_database_authentication_enabled
   enabled_cloudwatch_logs_exports     = local.logs_set
+  storage_encrypted                   = var.storage_encrypted
+  deletion_protection                 = var.deletion_protection
+  kms_key_id                          = var.create_kms_key ? aws_kms_key.cluster_storage_key.arn : null
+
+  depends_on = [aws_kms_key.cluster_storage_key]
 
   lifecycle {
     ignore_changes = [
@@ -89,4 +94,6 @@ resource "aws_rds_cluster_instance" "primary" {
   db_parameter_group_name      = aws_db_parameter_group.aurora_db_parameter_group_p.id
   performance_insights_enabled = var.performance_insights_enabled
   apply_immediately            = var.apply_changes_immediately
+  auto_minor_version_upgrade   = var.auto_minor_version_upgrade
+  monitoring_interval          = var.monitoring_interval
 }
