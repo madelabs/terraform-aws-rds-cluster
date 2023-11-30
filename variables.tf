@@ -159,3 +159,44 @@ variable "db_instance_parameter_group" {
     error_message = "The 'apply_method' field must be 'immediate' or 'pending-reboot'."
   }
 }
+
+variable "storage_encrypted" {
+  type        = bool
+  description = "Specifies whether the DB cluster is encrypted."
+  default     = false
+}
+
+variable "deletion_protection" {
+  type        = bool
+  description = "Specifies whether the DB cluster is protected from being accidentally deleted."
+  default     = false
+}
+
+variable "auto_minor_version_upgrade" {
+  type        = bool
+  description = "Specifies whether minor engine upgrades are applied automatically to the DB cluster during the maintenance window."
+  default     = true
+}
+
+variable "monitoring_interval" {
+  type        = number
+  description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB cluster."
+  default     = 0
+}
+
+variable "create_kms_key" {
+  type        = bool
+  description = "Whether a KMS key will be created for the cluster."
+  default     = false
+}
+
+variable "kms_key_deletion_window_in_days" {
+  type        = number
+  description = "Duration in days after which the key is deleted after destruction of the resource, must be between 7 and 30 days. Defaults to 30 days."
+  default     = 30
+
+  validation {
+    condition     = var.kms_key_deletion_window_in_days >= 7 && var.kms_key_deletion_window_in_days <= 30
+    error_message = "The 'kms_key_deletion_window_in_days' field must be between 7 and 30 days."
+  }
+}
