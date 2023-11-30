@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "rds_cluster_kms_key_policy" {
       "kms:DescribeKey"
     ]
 
-    resources = [aws_rds_cluster.cluster.arn]
+    resources = [aws_rds_cluster.primary.arn]
   }
 
   statement {
@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "rds_cluster_kms_key_policy" {
 
     actions = ["kms:CreateGrant", "kms:ListGrants", "kms:RevokeGrant"]
 
-    resources = [aws_rds_cluster.cluster.arn]
+    resources = [aws_rds_cluster.primary.arn]
 
     condition {
       test     = "Bool"
