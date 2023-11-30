@@ -2,17 +2,22 @@ resource "aws_kms_key" "cluster_storage_key" {
   count                   = var.create_kms_key ? 1 : 0
   description             = "KMS key for encrypting storage in the cluster ${local.cluster_identifier}."
   deletion_window_in_days = var.kms_key_deletion_window_in_days
-  policy                  = data.aws_iam_policy_document.rds_cluster_kms_key_policy.json
   enable_key_rotation     = true
 }
 
 resource "aws_kms_alias" "alias" {
   count         = var.create_kms_key ? 1 : 0
-  name          = "alias/${aws_kms_key.cluster_storage_key.key_id}"
-  target_key_id = aws_kms_key.cluster_storage_key.key_id
+  name          = "alias/${aws_kms_key.cluster_storage_key[0].key_id}"
+  target_key_id = aws_kms_key.cluster_storage_key[0].key_id
 }
 
-data "aws_iam_policy_document" "rds_cluster_kms_key_policy" {
+resource "aws_kms_key_policy" "cluster_storage_key_policy" {
+  count  = var.create_kms_key ? 1 : 0
+  key_id = aws_kms_key.cluster_storage_key[0].key_id
+  policy = data.aws_iam_policy_document.cluster_storage_key_policy[0].json
+}
+data "aws_iam_policy_document" "cluster_storage_key_policy" {
+  count = var.create_kms_key ? 1 : 0
   statement {
     sid    = "Allow use of the key"
     effect = "Allow"
@@ -30,7 +35,7 @@ data "aws_iam_policy_document" "rds_cluster_kms_key_policy" {
       "kms:DescribeKey"
     ]
 
-    resources = [aws_rds_cluster.primary.arn]
+    resources = ["*"]
   }
 
   statement {
@@ -44,7 +49,7 @@ data "aws_iam_policy_document" "rds_cluster_kms_key_policy" {
 
     actions = ["kms:CreateGrant", "kms:ListGrants", "kms:RevokeGrant"]
 
-    resources = [aws_rds_cluster.primary.arn]
+    resources = ["*"]
 
     condition {
       test     = "Bool"

@@ -50,9 +50,7 @@ resource "aws_rds_cluster" "primary" {
   enabled_cloudwatch_logs_exports     = local.logs_set
   storage_encrypted                   = var.storage_encrypted
   deletion_protection                 = var.deletion_protection
-  kms_key_id                          = var.create_kms_key ? aws_kms_key.cluster_storage_key.arn : null
-
-  depends_on = [aws_kms_key.cluster_storage_key]
+  kms_key_id                          = var.create_kms_key ? aws_kms_key.cluster_storage_key[0].arn : null
 
   lifecycle {
     ignore_changes = [
