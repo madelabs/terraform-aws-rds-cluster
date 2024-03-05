@@ -46,6 +46,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_allow_major_version_upgrade"></a> [allow\_major\_version\_upgrade](#input\_allow\_major\_version\_upgrade) | Enable to allow major engine version upgrades when changing engine versions. | `bool` | `false` | no |
 | <a name="input_apply_changes_immediately"></a> [apply\_changes\_immediately](#input\_apply\_changes\_immediately) | Changes to an RDS Cluster can occur when you manually change a parameter, such as port, and are reflected in the next maintenance window. You can use the apply\_changes\_immediately flag to instruct the service to apply the change immediately. | `bool` | `true` | no |
 | <a name="input_aurora_security_group_id"></a> [aurora\_security\_group\_id](#input\_aurora\_security\_group\_id) | Security group id to be attached to the created database instances. It must be a preexisting security group id, with the firewall rules that will be applied to the created cluster. | `string` | n/a | yes |
 | <a name="input_auto_minor_version_upgrade"></a> [auto\_minor\_version\_upgrade](#input\_auto\_minor\_version\_upgrade) | Specifies whether minor engine upgrades are applied automatically to the DB cluster during the maintenance window. | `bool` | `true` | no |

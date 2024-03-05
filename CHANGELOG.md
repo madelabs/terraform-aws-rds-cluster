@@ -7,6 +7,11 @@ All notable changes to this project will be documented in this file.
 - Support to global cluster
 - Support for monitoring features
 
+## [0.0.3] - 2024-03-05
+
+- Add support for major version upgrades.
+
+
 ## [0.0.2] - 2023-11-30
 
 - Add support for storage encryption.

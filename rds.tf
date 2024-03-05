@@ -51,7 +51,7 @@ resource "aws_rds_cluster" "primary" {
   storage_encrypted                   = var.storage_encrypted
   deletion_protection                 = var.deletion_protection
   kms_key_id                          = var.create_kms_key ? aws_kms_key.cluster_storage_key[0].arn : null
-
+  allow_major_version_upgrade         = var.allow_major_version_upgrade
   lifecycle {
     ignore_changes = [
       replication_source_identifier
