@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 - Support to global cluster
 - Support for monitoring features
 
+## [0.0.4] - 2024-06-10
+
+- Add support for using a secrets manager, managed outside of the module.
+
 ## [0.0.3] - 2024-03-05
 
 - Add support for major version upgrades.
