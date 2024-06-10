@@ -109,10 +109,9 @@ variable "publicly_accessible" {
   default     = false
 }
 
-variable "secrets_manager_suffix_name" {
+variable "secret_id" {
   type        = string
-  description = "After the cluster creation, a random password is generated. Such password will be stored into a new secret, on AWS Secrets Manager. The name of this secret will be composed by 'cluster_identifier-suffix', where suffix is defined using this variable."
-  default     = "root-user"
+  description = "The aws_secretsmanager_secret id where the password should be stored."
 }
 
 variable "db_root_user" {
