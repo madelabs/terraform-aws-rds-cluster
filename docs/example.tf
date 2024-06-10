@@ -1,6 +1,6 @@
 module "example_project" {
   source  = "madelabs/rds-cluster/aws"
-  version = "0.0.1"
+  version = "0.0.4"
 
   env                                 = "dev"
   aurora_security_group_id            = "sg-275a5d69"
@@ -11,7 +11,7 @@ module "example_project" {
   cluster_suffix_name                 = "aurorapg-1"
   skip_final_snapshot                 = false
   final_snapshot_identifier           = "dev-aurorapg-1"
-  secrets_manager_suffix_name         = "root-user-pgSQL"
+  secret_id                           = aws_secretsmanager_secret.aurora_root_secret.id
   cluster_parameter_group = [
     {
       name         = "rds.force_autovacuum_logging_level"
@@ -30,4 +30,8 @@ module "example_project" {
       value        = 1
       apply_method = "immediate"
   }]
+}
+
+resource "aws_secretsmanager_secret" "aurora_root_secret" {
+  name = "your secret name"
 }
