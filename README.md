@@ -85,6 +85,4 @@ No modules.
 | <a name="output_rds_cluster_arn"></a> [rds\_cluster\_arn](#output\_rds\_cluster\_arn) | n/a |
 | <a name="output_rds_cluster_endpoint"></a> [rds\_cluster\_endpoint](#output\_rds\_cluster\_endpoint) | n/a |
 | <a name="output_rds_cluster_resource_id"></a> [rds\_cluster\_resource\_id](#output\_rds\_cluster\_resource\_id) | n/a |
-| <a name="output_secret_arn"></a> [secret\_arn](#output\_secret\_arn) | n/a |
-| <a name="output_secret_name"></a> [secret\_name](#output\_secret\_name) | n/a |
 <!-- END_TF_DOCS -->
