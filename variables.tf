@@ -85,16 +85,22 @@ variable "enable_postgresql_log" {
 }
 
 #Security Variables
-variable "password_length" {
-  type        = number
-  description = "Length of the random password to be generated for the cluster."
-  default     = 10
-}
+# variable "password_length" {
+#   type        = number
+#   description = "Length of the random password to be generated for the cluster."
+#   default     = 10
+# }
 
-variable "password_include_special_character" {
-  type        = bool
-  description = "Wheter the generated password should have special characters in it."
-  default     = false
+# variable "password_include_special_character" {
+#   type        = bool
+#   description = "Wheter the generated password should have special characters in it."
+#   default     = false
+# }
+
+variable "db_root_password" {
+  type = string
+  description = "value"
+  sensitive   = true
 }
 
 variable "iam_database_authentication_enabled" {

@@ -3,10 +3,10 @@ data "aws_rds_engine_version" "family" {
   version = var.postgres_version
 }
 
-resource "random_password" "aurora" {
-  length  = var.password_length
-  special = var.password_include_special_character
-}
+# resource "random_password" "aurora" {
+#   length  = var.password_length
+#   special = var.password_include_special_character
+# }
 
 # Cluster Configuration
 resource "aws_rds_cluster_parameter_group" "aurora_cluster_parameter_group_p" {
@@ -37,7 +37,7 @@ resource "aws_rds_cluster" "primary" {
   port                                = var.db_port
   database_name                       = var.database_name
   master_username                     = var.db_root_user
-  master_password                     = random_password.aurora.result
+  master_password                     = var.db_root_password
   db_cluster_parameter_group_name     = aws_rds_cluster_parameter_group.aurora_cluster_parameter_group_p.id
   db_instance_parameter_group_name    = aws_db_parameter_group.aurora_db_parameter_group_p.id
   backup_retention_period             = var.backup_retention_days
