@@ -115,10 +115,10 @@ variable "publicly_accessible" {
   default     = false
 }
 
-variable "secret_id" {
-  type        = string
-  description = "The aws_secretsmanager_secret id where the password should be stored."
-}
+# variable "secret_id" {
+#   type        = string
+#   description = "The aws_secretsmanager_secret id where the password should be stored."
+# }
 
 variable "db_root_user" {
   type        = string
