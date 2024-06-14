@@ -1,3 +1,26 @@
+#Create a random password
+resource "random_password" "aurora_password" {
+  length  = 10
+  special = true
+}
+
+#Create a secret to store the password
+resource "aws_secretsmanager_secret" "aurora_root_secret" {
+  name = "your secret name"
+}
+
+#Store the secret in the secret
+resource "aws_secretsmanager_secret_version" "initial_secret" {
+  secret_id     = aws_secretsmanager_secret.aurora_cluster_password.id
+  secret_string = random_password.aurora_password.result
+  lifecycle {
+    ignore_changes = [
+      secret_string
+    ]
+  }
+}
+
+#Call this module referencing the secret-id
 module "example_project" {
   source  = "madelabs/rds-cluster/aws"
   version = "0.0.4"
@@ -12,6 +35,8 @@ module "example_project" {
   skip_final_snapshot                 = false
   final_snapshot_identifier           = "dev-aurorapg-1"
   secret_id                           = aws_secretsmanager_secret.aurora_root_secret.id
+  db_master_user = "root"
+  db_port = "5432"
   cluster_parameter_group = [
     {
       name         = "rds.force_autovacuum_logging_level"
@@ -32,6 +57,4 @@ module "example_project" {
   }]
 }
 
-resource "aws_secretsmanager_secret" "aurora_root_secret" {
-  name = "your secret name"
-}
+
