@@ -35,8 +35,8 @@ module "example_project" {
   skip_final_snapshot                 = false
   final_snapshot_identifier           = "dev-aurorapg-1"
   secret_id                           = aws_secretsmanager_secret.aurora_root_secret.id
-  db_master_user = "root"
-  db_port = "5432"
+  db_master_user                      = "root"
+  db_port                             = "5432"
   cluster_parameter_group = [
     {
       name         = "rds.force_autovacuum_logging_level"
