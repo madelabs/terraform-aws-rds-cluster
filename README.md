@@ -37,6 +37,7 @@ No modules.
 | [aws_rds_cluster_parameter_group.aurora_cluster_parameter_group_p](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster_parameter_group) | resource |
 | [aws_iam_policy_document.cluster_storage_key_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_rds_engine_version.family](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/rds_engine_version) | data source |
+| [aws_secretsmanager_secret_version.password_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
 
 ## Inputs
 
@@ -53,9 +54,8 @@ No modules.
 | <a name="input_database_instance_count"></a> [database\_instance\_count](#input\_database\_instance\_count) | Number of database instances to be created in the cluster. | `number` | `1` | no |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | If provided, a database with this name will automatically be created on cluster creation. | `string` | `null` | no |
 | <a name="input_db_instance_parameter_group"></a> [db\_instance\_parameter\_group](#input\_db\_instance\_parameter\_group) | Is the set of engine configuration values that apply to a specific DB instance of that engine type. | <pre>list(object({<br>    name         = string<br>    value        = any<br>    apply_method = string<br>  }))</pre> | `[]` | no |
+| <a name="input_db_master_user"></a> [db\_master\_user](#input\_db\_master\_user) | User that will be created as a master user on the created cluster | `string` | n/a | yes |
 | <a name="input_db_port"></a> [db\_port](#input\_db\_port) | Port where the database will be available for connections. | `string` | `"5432"` | no |
-| <a name="input_db_root_password"></a> [db\_root\_password](#input\_db\_root\_password) | value | `string` | n/a | yes |
-| <a name="input_db_root_user"></a> [db\_root\_user](#input\_db\_root\_user) | Root user that will be created for cluster. | `string` | `"root"` | no |
 | <a name="input_deletion_protection"></a> [deletion\_protection](#input\_deletion\_protection) | Specifies whether the DB cluster is protected from being accidentally deleted. | `bool` | `false` | no |
 | <a name="input_enable_postgresql_log"></a> [enable\_postgresql\_log](#input\_enable\_postgresql\_log) | Whether postgresql logs will be enable for the created cluster. | `bool` | `false` | no |
 | <a name="input_env"></a> [env](#input\_env) | Name of the environment where this infrastructure is going to be deployed, such as 'dev', 'prod' or whatever name you use. This will be a name prefix for the created resources. | `string` | n/a | yes |
@@ -67,6 +67,7 @@ No modules.
 | <a name="input_performance_insights_enabled"></a> [performance\_insights\_enabled](#input\_performance\_insights\_enabled) | Specifies whether Performance Insights is enabled or not. | `bool` | `false` | no |
 | <a name="input_postgres_version"></a> [postgres\_version](#input\_postgres\_version) | Postgres version to run. | `string` | `"13.8"` | no |
 | <a name="input_publicly_accessible"></a> [publicly\_accessible](#input\_publicly\_accessible) | Whether the database will be publicly accessible. If true, the VPC needs to have an Internet Gateway attached to it. | `bool` | `false` | no |
+| <a name="input_secret_id"></a> [secret\_id](#input\_secret\_id) | The aws\_secretsmanager\_secret id where the password is stored. This module reads the password and use its value as the root user password. | `string` | n/a | yes |
 | <a name="input_skip_final_snapshot"></a> [skip\_final\_snapshot](#input\_skip\_final\_snapshot) | Determines whether a final DB snapshot is created before the DB cluster is deleted. If true is specified, no DB snapshot is created. If false is specified, a DB snapshot is created before the DB cluster is deleted, using the value from final\_snapshot\_identifier. | `bool` | `false` | no |
 | <a name="input_snapshot_identifier"></a> [snapshot\_identifier](#input\_snapshot\_identifier) | Specifies whether or not to create this cluster from a snapshot. You can use either the name or ARN when specifying a DB cluster snapshot, or the ARN when specifying a DB snapshot. | `string` | `null` | no |
 | <a name="input_storage_encrypted"></a> [storage\_encrypted](#input\_storage\_encrypted) | Specifies whether the DB cluster is encrypted. | `bool` | `false` | no |
