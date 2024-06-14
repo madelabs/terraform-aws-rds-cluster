@@ -97,10 +97,9 @@ variable "enable_postgresql_log" {
 #   default     = false
 # }
 
-variable "db_root_password" {
-  type = string
-  description = "value"
-  sensitive   = true
+variable "db_master_user" {
+  type        = string
+  description = "User that will be created as a master user on the created cluster"
 }
 
 variable "iam_database_authentication_enabled" {
@@ -115,15 +114,9 @@ variable "publicly_accessible" {
   default     = false
 }
 
-# variable "secret_id" {
-#   type        = string
-#   description = "The aws_secretsmanager_secret id where the password should be stored."
-# }
-
-variable "db_root_user" {
+variable "secret_id" {
   type        = string
-  description = "Root user that will be created for cluster."
-  default     = "root"
+  description = "The aws_secretsmanager_secret id where the password is stored. This module reads the password and use its value as the root user password."
 }
 
 variable "aurora_security_group_id" {
