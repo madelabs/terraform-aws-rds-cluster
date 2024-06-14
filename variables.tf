@@ -85,18 +85,6 @@ variable "enable_postgresql_log" {
 }
 
 #Security Variables
-# variable "password_length" {
-#   type        = number
-#   description = "Length of the random password to be generated for the cluster."
-#   default     = 10
-# }
-
-# variable "password_include_special_character" {
-#   type        = bool
-#   description = "Wheter the generated password should have special characters in it."
-#   default     = false
-# }
-
 variable "db_master_user" {
   type        = string
   description = "User that will be created as a master user on the created cluster"
