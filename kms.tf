@@ -79,14 +79,9 @@ data "aws_iam_policy_document" "cluster_storage_key_policy" {
       "kms:Get*",
       "kms:Delete*",
       "kms:ScheduleKeyDeletion",
-      "kms:CancelKeyDeletion",]
+    "kms:CancelKeyDeletion", ]
 
     resources = ["*"]
 
-    condition {
-      test     = "Bool"
-      variable = "kms:GrantIsForAWSResource"
-      values   = ["true"]
-    }
   }
 }
