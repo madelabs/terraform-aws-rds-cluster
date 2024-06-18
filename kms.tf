@@ -16,6 +16,7 @@ resource "aws_kms_key_policy" "cluster_storage_key_policy" {
   key_id = aws_kms_key.cluster_storage_key[0].key_id
   policy = data.aws_iam_policy_document.cluster_storage_key_policy[0].json
 }
+
 data "aws_iam_policy_document" "cluster_storage_key_policy" {
   count = var.create_kms_key ? 1 : 0
   statement {
@@ -64,7 +65,7 @@ data "aws_iam_policy_document" "cluster_storage_key_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::569510392077:role/tfc-deployment"]
+      identifiers = [local.executing-identity]
     }
 
     actions = [
@@ -79,9 +80,19 @@ data "aws_iam_policy_document" "cluster_storage_key_policy" {
       "kms:Get*",
       "kms:Delete*",
       "kms:ScheduleKeyDeletion",
-    "kms:CancelKeyDeletion", ]
+      "kms:CancelKeyDeletion", ]
 
     resources = ["*"]
 
   }
+}
+
+data "aws_caller_identity" "current"{}
+
+output "caller_arn"{
+  value = data.aws_caller_identity.current.arn
+}
+
+locals{
+  executing-identity = data.aws_caller_identity.current.arn #"arn:aws:iam::569510392077:role/tfc-deployment"
 }
