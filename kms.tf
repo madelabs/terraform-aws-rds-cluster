@@ -7,7 +7,7 @@ resource "aws_kms_key" "cluster_storage_key_1" {
 
 resource "aws_kms_alias" "alias" {
   count         = var.create_kms_key ? 1 : 0
-  name          = "alias/${aws_kms_key.cluster_storage_key_1[0].key_id}"
+  name          = "alias/${local.cluster_identifier}-storage-key"
   target_key_id = aws_kms_key.cluster_storage_key_1[0].key_id
 }
 
