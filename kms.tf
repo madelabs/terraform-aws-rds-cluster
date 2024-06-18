@@ -65,7 +65,7 @@ data "aws_iam_policy_document" "cluster_storage_key_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = [data.aws_iam_session_context.context.issuer_arn]
+      identifiers = ["arn:aws:iam::569510392077:role/tfc-deployment"]
     }
 
     actions = [
