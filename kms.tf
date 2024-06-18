@@ -65,7 +65,7 @@ data "aws_iam_policy_document" "cluster_storage_key_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = [local.executing-identity]
+      identifiers = [data.aws_iam_session_context.context.issuer_arn]
     }
 
     actions = [
@@ -89,10 +89,27 @@ data "aws_iam_policy_document" "cluster_storage_key_policy" {
 
 data "aws_caller_identity" "current"{}
 
+data "aws_iam_session_context" "context" {
+  arn = data.aws_caller_identity.current.arn
+}
+
 output "caller_arn"{
   value = data.aws_caller_identity.current.arn
 }
 
-locals{
-  executing-identity = data.aws_caller_identity.current.arn #"arn:aws:iam::569510392077:role/tfc-deployment"
+output "caller_user_id"{
+  value = data.aws_caller_identity.current.user_id
 }
+
+output "caller_id"{
+  value = data.aws_caller_identity.current.id
+}
+
+output "caller_account_id"{
+  value = data.aws_caller_identity.current.account_id
+}
+
+# locals{
+#   executing-identity = data.aws_caller_identity.current.id #"arn:aws:iam::569510392077:role/tfc-deployment"
+# }
+
