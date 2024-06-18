@@ -68,13 +68,12 @@ data "aws_iam_policy_document" "cluster_storage_key_policy" {
       identifiers = ["${data.aws_iam_session_context.context.issuer_arn}"]
     }
 
-    actions = ["kms:*"]
+    actions   = ["kms:*"]
     resources = ["*"]
   }
 }
 
-
-data "aws_caller_identity" "current"{}
+data "aws_caller_identity" "current" {}
 
 data "aws_iam_session_context" "context" {
   arn = data.aws_caller_identity.current.arn
