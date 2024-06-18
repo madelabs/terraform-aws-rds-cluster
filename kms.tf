@@ -1,4 +1,4 @@
-resource "aws_kms_key" "cluster_storage_key" {
+resource "aws_kms_key" "cluster_storage_key_1" {
   count                   = var.create_kms_key ? 1 : 0
   description             = "KMS key for encrypting storage in the cluster ${local.cluster_identifier}."
   deletion_window_in_days = var.kms_key_deletion_window_in_days
@@ -7,13 +7,13 @@ resource "aws_kms_key" "cluster_storage_key" {
 
 resource "aws_kms_alias" "alias" {
   count         = var.create_kms_key ? 1 : 0
-  name          = "alias/${aws_kms_key.cluster_storage_key[0].key_id}"
-  target_key_id = aws_kms_key.cluster_storage_key[0].key_id
+  name          = "alias/${aws_kms_key.cluster_storage_key_1[0].key_id}"
+  target_key_id = aws_kms_key.cluster_storage_key_1[0].key_id
 }
 
 resource "aws_kms_key_policy" "cluster_storage_key_policy" {
   count  = var.create_kms_key ? 1 : 0
-  key_id = aws_kms_key.cluster_storage_key[0].key_id
+  key_id = aws_kms_key.cluster_storage_key_1[0].key_id
   policy = data.aws_iam_policy_document.cluster_storage_key_policy[0].json
 }
 
