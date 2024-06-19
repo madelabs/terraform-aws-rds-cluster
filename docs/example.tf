@@ -6,7 +6,7 @@ resource "random_password" "aurora_password" {
 
 #Create a secret to store the password
 resource "aws_secretsmanager_secret" "aurora_root_secret" {
-  name = "aurora-secret"
+  name                    = "aurora-secret"
   recovery_window_in_days = 7
 }
 
@@ -23,7 +23,7 @@ resource "aws_secretsmanager_secret_version" "initial_secret" {
 
 #Call this module referencing the secret-id
 module "example_project" {
-  source = "madelabs/rds-cluster/aws"
+  source  = "madelabs/rds-cluster/aws"
   version = "0.0.4"
 
   env                                 = "dev"
