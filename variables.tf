@@ -85,16 +85,9 @@ variable "enable_postgresql_log" {
 }
 
 #Security Variables
-variable "password_length" {
-  type        = number
-  description = "Length of the random password to be generated for the cluster."
-  default     = 10
-}
-
-variable "password_include_special_character" {
-  type        = bool
-  description = "Wheter the generated password should have special characters in it."
-  default     = false
+variable "db_master_user" {
+  type        = string
+  description = "User that will be created as a master user on the created cluster"
 }
 
 variable "iam_database_authentication_enabled" {
@@ -109,16 +102,9 @@ variable "publicly_accessible" {
   default     = false
 }
 
-variable "secrets_manager_suffix_name" {
+variable "secret_id" {
   type        = string
-  description = "After the cluster creation, a random password is generated. Such password will be stored into a new secret, on AWS Secrets Manager. The name of this secret will be composed by 'cluster_identifier-suffix', where suffix is defined using this variable."
-  default     = "root-user"
-}
-
-variable "db_root_user" {
-  type        = string
-  description = "Root user that will be created for cluster."
-  default     = "root"
+  description = "The aws resource id where the password is stored. This is also the arn of the secret. This module reads the password and use its value as the master user password."
 }
 
 variable "aurora_security_group_id" {

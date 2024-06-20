@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 - Support to global cluster
 - Support for monitoring features
 
+## [0.0.4] - 2024-06-14
+
+- Changes how the module interact with password for the master user. Instead of generating a password inside of this module, the password is stored in a secret manager, and the secret-id is passed in as a module parameter.
+
 ## [0.0.3] - 2024-03-05
 
 - Add support for major version upgrades.
