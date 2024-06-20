@@ -65,7 +65,9 @@ data "aws_iam_policy_document" "cluster_storage_key_policy" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${data.aws_iam_session_context.context.issuer_arn}"]
+      identifiers = [
+        "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root",
+        "${data.aws_iam_session_context.context.issuer_arn}"]
     }
 
     actions   = ["kms:*"]
