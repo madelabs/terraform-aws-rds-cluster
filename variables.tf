@@ -104,7 +104,7 @@ variable "publicly_accessible" {
 
 variable "secret_id" {
   type        = string
-  description = "The aws_secretsmanager_secret id where the password is stored. This module reads the password and use its value as the master user password."
+  description = "The aws resource id where the password is stored. This is also the arn of the secret. This module reads the password and use its value as the master user password."
 }
 
 variable "aurora_security_group_id" {
