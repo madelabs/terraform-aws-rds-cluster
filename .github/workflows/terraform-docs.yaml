@@ -1,4 +1,4 @@
-name: terraform
+name: terraform-docs
 run-name: terraform action ${{ github.event.pull_request.title }}
 on:
   pull_request:
