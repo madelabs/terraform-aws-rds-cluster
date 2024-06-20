@@ -64,10 +64,10 @@ data "aws_iam_policy_document" "cluster_storage_key_policy" {
     effect = "Allow"
 
     principals {
-      type        = "AWS"
+      type = "AWS"
       identifiers = [
         "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root",
-        "${data.aws_iam_session_context.context.issuer_arn}"]
+      "${data.aws_iam_session_context.context.issuer_arn}"]
     }
 
     actions   = ["kms:*"]
