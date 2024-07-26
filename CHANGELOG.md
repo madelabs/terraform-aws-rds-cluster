@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.0.5] - 2024-07-26
 
-- Adding the ability on the module to create the master user's password, so the caller can choose between providing a password through a Secrets Manager Secret, or let the module to create it. 
+- Adding the ability on the module to create the master user's password, so the caller can choose between providing a password through a Secrets Manager Secret, or let the module create it. 
 
 ## [0.0.4] - 2024-06-14
 
