@@ -87,7 +87,7 @@ variable "enable_postgresql_log" {
 #Security Variables
 variable "db_master_user" {
   type        = string
-  description = "User that will be created as a master user on the created cluster"
+  description = "User that will be created as a master user on the created cluster."
 }
 
 variable "iam_database_authentication_enabled" {
