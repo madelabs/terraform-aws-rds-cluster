@@ -63,7 +63,7 @@ No modules.
 | <a name="input_database_instance_count"></a> [database\_instance\_count](#input\_database\_instance\_count) | Number of database instances to be created in the cluster. | `number` | `1` | no |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | If provided, a database with this name will automatically be created on cluster creation. | `string` | `null` | no |
 | <a name="input_db_instance_parameter_group"></a> [db\_instance\_parameter\_group](#input\_db\_instance\_parameter\_group) | Is the set of engine configuration values that apply to a specific DB instance of that engine type. | <pre>list(object({<br>    name         = string<br>    value        = any<br>    apply_method = string<br>  }))</pre> | `[]` | no |
-| <a name="input_db_master_user"></a> [db\_master\_user](#input\_db\_master\_user) | User that will be created as a master user on the created cluster | `string` | n/a | yes |
+| <a name="input_db_master_user"></a> [db\_master\_user](#input\_db\_master\_user) | User that will be created as a master user on the created cluster. | `string` | n/a | yes |
 | <a name="input_db_port"></a> [db\_port](#input\_db\_port) | Port where the database will be available for connections. | `string` | `"5432"` | no |
 | <a name="input_deletion_protection"></a> [deletion\_protection](#input\_deletion\_protection) | Specifies whether the DB cluster is protected from being accidentally deleted. | `bool` | `false` | no |
 | <a name="input_enable_postgresql_log"></a> [enable\_postgresql\_log](#input\_enable\_postgresql\_log) | Whether postgresql logs will be enable for the created cluster. | `bool` | `false` | no |
