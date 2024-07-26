@@ -8,10 +8,11 @@ We're also for hire: [https://www.madelabs.io](https://www.madelabs.io)
 <!-- END MadeLabs Header -->
 ---
 A Terraform module for managing a simple Aurora Postgres cluster. 
-It gets a list of inputs, and creates an Aurora Postgres Cluster, with a configurable number of instances. In addition, it creates a secret on AWS Secrets Manager, to store the credentials to access the recently created cluster.
-There is a naming convention for the created resources, and the client is allowed to provide some prefixes and suffixes, that are used to build the names.
-The client can also choose between providing a password through an AWS Secrets Manager Secret, or let the module to generate a password for it.
-One of the outputs is an AWS Secrets Manager Secret, where access information are going to be found.
+It gets a list of inputs, and creates an Aurora Postgres Cluster, with a configurable number of instances. In addition, it creates a secret on AWS Secrets Manager, to store credentials to access the recently created cluster. This output secret has the root user, password, endpoint and reader_endpoint, that represents the read-only endpoint for the Aurora cluster, automatically load-balanced across replicas.
+ You can see more information on [aws_rds_cluster documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster#reader_endpoint).
+
+There is a naming convention for the created resources, and the caller is allowed to provide some prefixes and suffixes, that are used to build the names.
+The caller can also choose between providing a password through an AWS Secrets Manager Secret, or let the module generate a password for it.
 
 ![PlantUML model](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/madelabs/terraform-aws-rds-cluster/main/docs/diagram.puml)
 
