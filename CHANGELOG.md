@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 - Support to global cluster
 - Support for monitoring features
 
+## [0.0.5] - 2024-07-26
+
+- Adding the ability on the module to create the master user's password, so the caller can choose between providing a password through a Secrets Manager Secret, or let the module to create it. 
+
 ## [0.0.4] - 2024-06-14
 
 - Changes how the module interact with password for the master user. Instead of generating a password inside of this module, the password is stored in a secret manager, and the secret-id is passed in as a module parameter.

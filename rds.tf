@@ -24,11 +24,6 @@ resource "aws_rds_cluster_parameter_group" "aurora_cluster_parameter_group_p" {
   }
 }
 
-data "aws_secretsmanager_secret_version" "password_secret" {
-  secret_id = var.secret_id
-}
-
-
 resource "aws_rds_cluster" "primary" {
   cluster_identifier                  = local.cluster_identifier
   engine                              = local.supported_engine
@@ -37,7 +32,7 @@ resource "aws_rds_cluster" "primary" {
   port                                = var.db_port
   database_name                       = var.database_name
   master_username                     = var.db_master_user
-  master_password                     = data.aws_secretsmanager_secret_version.password_secret.secret_string
+  master_password                     = local.db_password
   db_cluster_parameter_group_name     = aws_rds_cluster_parameter_group.aurora_cluster_parameter_group_p.id
   db_instance_parameter_group_name    = aws_db_parameter_group.aurora_db_parameter_group_p.id
   backup_retention_period             = var.backup_retention_days
