@@ -1,5 +1,5 @@
-# This file has two examples showing some different ways to utilize the module
-# Example 1 is when you don't want to specify a password. In this case, the module is going to generate a random password for the cluster, and you can access it using the ouput secret that is created
+# This file has two examples showing some different ways to utilize the module:
+# Example 1 is when you don't want to specify a password. In this case, the module is going to generate a random password for the cluster, and you can access it using the ouput secret that is created.
 # Example 2 is when you want to specify a password. In this case, it has to be done through a Secrets Manager secret. You create the secret, add the desired password there, and provide secret_id variable, so the module can access it.
 
 #Example 1
