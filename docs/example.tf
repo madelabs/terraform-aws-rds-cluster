@@ -44,8 +44,9 @@ module "example_project" {
 ##-----------------------------------------------------------------------------------------##
 
 #Example 2
-locals {
-  password = "pass1234"
+variable "password" {
+  type        = string
+  description = "Master user password value."
 }
 
 resource "aws_secretsmanager_secret" "aurora_cluster_password" {
@@ -55,7 +56,7 @@ resource "aws_secretsmanager_secret" "aurora_cluster_password" {
 
 resource "aws_secretsmanager_secret_version" "initial_secret" {
   secret_id     = aws_secretsmanager_secret.aurora_cluster_password.id
-  secret_string = local.password
+  secret_string = var.password
 }
 
 module "example_project_2" {
