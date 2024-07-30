@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 - Support to global cluster
 - Support for monitoring features
 
+## [0.0.6] - 2024-07-30
+
+- Fixing a bug, where the db_name is `null` on the secret when the caller doesn't specify a database to be created. In these cases, the default `postgres` value is going to be added.
+
 ## [0.0.5] - 2024-07-26
 
 - Adding the ability on the module to create the master user's password, so the caller can choose between providing a password through a Secrets Manager Secret, or let the module create it. 
