@@ -5,7 +5,7 @@
 #Example 1
 module "example_project" {
   source                              = "madelabs/rds-cluster/aws"
-  version                             = "0.0.6"
+  version                             = "0.0.7"
   generate_password                   = true
   env                                 = "dev"
   aurora_security_group_id            = "sg-0fb4ba8549e60d174"
@@ -71,7 +71,7 @@ resource "aws_secretsmanager_secret_version" "initial_secret" {
 
 module "example_project_2" {
   source                              = "madelabs/rds-cluster/aws"
-  version                             = "0.0.6"
+  version                             = "0.0.7"
   generate_password                   = false
   env                                 = "dev"
   aurora_security_group_id            = "sg-0fb4ba8549e60d174"
