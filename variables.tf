@@ -222,7 +222,7 @@ variable "cluster_tags" {
 }
 
 variable "instance_specific_tags" {
-  description = "Instance specifying tags to be added to individual instances. This works in conjunction with database_instance_count variable. Provided instance number cannot exceed instance count."
+  description = "Instance specific tags to be added to individual instances. This works in conjunction with database_instance_count variable. Provided instance number cannot exceed instance count."
   type = list(object({
     instance_number = number
     tag_key         = string
