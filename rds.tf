@@ -78,8 +78,8 @@ resource "aws_db_parameter_group" "aurora_db_parameter_group_p" {
 
 resource "aws_rds_cluster_instance" "primary" {
   publicly_accessible          = var.publicly_accessible
-  count                        = var.database_instance_count
-  identifier                   = "${local.cluster_identifier}-${count.index + 1}"
+  for_each                     = { for idx, instance in local.instances : idx => instance }
+  identifier                   = "${local.cluster_identifier}-${each.value.instance_number}${each.value.instance_name != "" ? "-${each.value.instance_name}" : ""}"
   cluster_identifier           = aws_rds_cluster.primary.id
   engine                       = aws_rds_cluster.primary.engine
   engine_version               = var.postgres_version
@@ -93,7 +93,7 @@ resource "aws_rds_cluster_instance" "primary" {
   tags = {
     for tag in var.instance_specific_tags :
     tag.tag_key => tag.tag_value
-    if tag.instance_number == count.index + 1
+    if tag.instance_number == each.key + 1
   }
 
   lifecycle {
@@ -108,3 +108,15 @@ locals {
   instance_numbers    = [for tag in var.instance_specific_tags : tag.instance_number]
   max_instance_number = max(local.instance_numbers...)
 }
+
+locals {
+  instances = [for i in range(var.database_instance_count) : {
+    instance_number = i + 1
+    instance_tags   = [for tag in var.instance_specific_tags : tag if tag.instance_number == i + 1]
+    instance_name = try(
+      (tolist([for tag in var.instance_specific_tags : tag.tag_value if tag.instance_number == i + 1 && tag.tag_key == "instance_name"])[0]),
+      ""
+    )
+  }]
+}
+

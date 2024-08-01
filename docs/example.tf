@@ -22,13 +22,19 @@ module "example_project" {
   create_kms_key                      = true
   secret_deletion_window_in_days      = 0
   postgres_version                    = "16.1"
-  database_instance_count             = 1
-  cluster_tags                        = { "my-cluster-tag-key" = "my-cluster-tag-value", "another-tag" = "another-value" }
+  database_instance_count             = 2
+  cluster_tags                        = { "my_cluster_tag_key" = "my_cluster_tag_value", "another_tag" = "another_value" }
   instance_specific_tags = [
+   {
+      instance_number = 2
+      tag_key         = "instance_tag_key"
+      tag_value       = "instance_tag_value"
+    },
     {
-      instance_number = 1
-      tag_key         = "instance-tag-key"
-      tag_value       = "instance-tag-value"
+      instance_number = 2
+      #by adding instance_tag tag, the cluster name sulfix will be defined by the tag value.
+      tag_key   = "instance_name"
+      tag_value = "reserved"
     }
   ]
   cluster_parameter_group = [
