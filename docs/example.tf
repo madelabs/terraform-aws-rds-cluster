@@ -23,7 +23,7 @@ module "example_project" {
   secret_deletion_window_in_days      = 0
   postgres_version                    = "16.1"
   database_instance_count             = 1
-  cluster_tags                        = { "my-cluster-tag-key" = "my-cluster-tag-value", "another-tag" = "another value" }
+  cluster_tags                        = { "my-cluster-tag-key" = "my-cluster-tag-value", "another-tag" = "another-value" }
   instance_specific_tags = [
     {
       instance_number = 1
