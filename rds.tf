@@ -47,6 +47,7 @@ resource "aws_rds_cluster" "primary" {
   deletion_protection                 = var.deletion_protection
   kms_key_id                          = var.create_kms_key ? aws_kms_key.cluster_storage_key[0].arn : null
   allow_major_version_upgrade         = var.allow_major_version_upgrade
+  tags                                = var.cluster_tags
   lifecycle {
     ignore_changes = [
       replication_source_identifier
@@ -89,4 +90,21 @@ resource "aws_rds_cluster_instance" "primary" {
   apply_immediately            = var.apply_changes_immediately
   auto_minor_version_upgrade   = var.auto_minor_version_upgrade
   monitoring_interval          = var.monitoring_interval
+  tags = {
+    for tag in var.instance_specific_tags :
+    tag.tag_key => tag.tag_value
+    if tag.instance_number == count.index + 1
+  }
+
+  lifecycle {
+    precondition {
+      condition     = var.database_instance_count >= local.max_instance_number
+      error_message = "Instance number attribute on instance_specific_tags variable cannot be greater than database_instance_count."
+    }
+  }
+}
+
+locals {
+  instance_numbers    = [for tag in var.instance_specific_tags : tag.instance_number]
+  max_instance_number = max(local.instance_numbers...)
 }
