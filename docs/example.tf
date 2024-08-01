@@ -25,7 +25,7 @@ module "example_project" {
   database_instance_count             = 2
   cluster_tags                        = { "my_cluster_tag_key" = "my_cluster_tag_value", "another_tag" = "another_value" }
   instance_specific_tags = [
-   {
+    {
       instance_number = 2
       tag_key         = "instance_tag_key"
       tag_value       = "instance_tag_value"
