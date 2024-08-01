@@ -32,7 +32,7 @@ module "example_project" {
     },
     {
       instance_number = 2
-      #by adding instance_tag tag, the cluster name sulfix will be defined by the tag value.
+      #by adding instance_name tag, the cluster name sulfix will be defined by the tag value.
       tag_key   = "instance_name"
       tag_value = "reserved"
     }
