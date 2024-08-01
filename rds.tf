@@ -107,9 +107,6 @@ resource "aws_rds_cluster_instance" "primary" {
 locals {
   instance_numbers    = [for tag in var.instance_specific_tags : tag.instance_number]
   max_instance_number = max(local.instance_numbers...)
-}
-
-locals {
   instances = [for i in range(var.database_instance_count) : {
     instance_number = i + 1
     instance_tags   = [for tag in var.instance_specific_tags : tag if tag.instance_number == i + 1]
@@ -119,4 +116,5 @@ locals {
     )
   }]
 }
+
 
