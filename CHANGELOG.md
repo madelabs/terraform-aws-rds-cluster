@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 - Support to global cluster
 - Support for monitoring features
 
+## [0.0.8] - 2024-08-02
+
+- Fixing a bug, where the plan fails if there is no instance_specific_tags. The validation mechanism was updated to avoid the error.
+
 ## [0.0.7] - 2024-08-01
 
 - Adding the ability to add tags to the cluster, as well as instance_specific_tags.
