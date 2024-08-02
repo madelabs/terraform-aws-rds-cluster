@@ -98,15 +98,15 @@ resource "aws_rds_cluster_instance" "primary" {
 
   lifecycle {
     precondition {
-      condition     = var.database_instance_count >= local.max_instance_number
+      condition     = var.database_instance_count >= local.tags_max_instance_number
       error_message = "Instance number attribute on instance_specific_tags variable cannot be greater than database_instance_count."
     }
   }
 }
 
 locals {
-  instance_numbers    = [for tag in var.instance_specific_tags : tag.instance_number]
-  max_instance_number = max(local.instance_numbers...)
+  tags_instance_numbers    = [for tag in var.instance_specific_tags : tag.instance_number]
+  tags_max_instance_number = length(local.tags_instance_numbers) == 0 ? 0 : max(local.tags_instance_numbers...)
   instances = [for i in range(var.database_instance_count) : {
     instance_number = i + 1
     instance_tags   = [for tag in var.instance_specific_tags : tag if tag.instance_number == i + 1]
