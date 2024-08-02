@@ -5,7 +5,7 @@
 #Example 1
 module "example_project" {
   source                              = "madelabs/rds-cluster/aws"
-  version                             = "0.0.5"
+  version                             = "0.0.7"
   generate_password                   = true
   env                                 = "dev"
   aurora_security_group_id            = "sg-0fb4ba8549e60d174"
@@ -21,6 +21,22 @@ module "example_project" {
   storage_encrypted                   = true
   create_kms_key                      = true
   secret_deletion_window_in_days      = 0
+  postgres_version                    = "16.1"
+  database_instance_count             = 2
+  cluster_tags                        = { "my_cluster_tag_key" = "my_cluster_tag_value", "another_tag" = "another_value" }
+  instance_specific_tags = [
+    {
+      instance_number = 2
+      tag_key         = "instance_tag_key"
+      tag_value       = "instance_tag_value"
+    },
+    {
+      instance_number = 2
+      #by adding instance_name tag, the cluster name sulfix will be defined by the tag value.
+      tag_key   = "instance_name"
+      tag_value = "reserved"
+    }
+  ]
   cluster_parameter_group = [
     {
       name         = "rds.force_autovacuum_logging_level"
@@ -61,7 +77,7 @@ resource "aws_secretsmanager_secret_version" "initial_secret" {
 
 module "example_project_2" {
   source                              = "madelabs/rds-cluster/aws"
-  version                             = "0.0.5"
+  version                             = "0.0.7"
   generate_password                   = false
   env                                 = "dev"
   aurora_security_group_id            = "sg-0fb4ba8549e60d174"

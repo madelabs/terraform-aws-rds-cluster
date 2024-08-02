@@ -47,6 +47,7 @@ resource "aws_rds_cluster" "primary" {
   deletion_protection                 = var.deletion_protection
   kms_key_id                          = var.create_kms_key ? aws_kms_key.cluster_storage_key[0].arn : null
   allow_major_version_upgrade         = var.allow_major_version_upgrade
+  tags                                = var.cluster_tags
   lifecycle {
     ignore_changes = [
       replication_source_identifier
@@ -77,8 +78,8 @@ resource "aws_db_parameter_group" "aurora_db_parameter_group_p" {
 
 resource "aws_rds_cluster_instance" "primary" {
   publicly_accessible          = var.publicly_accessible
-  count                        = var.database_instance_count
-  identifier                   = "${local.cluster_identifier}-${count.index + 1}"
+  for_each                     = { for idx, instance in local.instances : idx => instance }
+  identifier                   = "${local.cluster_identifier}-${each.value.instance_number}${each.value.instance_name != "" ? "-${each.value.instance_name}" : ""}"
   cluster_identifier           = aws_rds_cluster.primary.id
   engine                       = aws_rds_cluster.primary.engine
   engine_version               = var.postgres_version
@@ -89,4 +90,31 @@ resource "aws_rds_cluster_instance" "primary" {
   apply_immediately            = var.apply_changes_immediately
   auto_minor_version_upgrade   = var.auto_minor_version_upgrade
   monitoring_interval          = var.monitoring_interval
+  tags = {
+    for tag in var.instance_specific_tags :
+    tag.tag_key => tag.tag_value
+    if tag.instance_number == each.key + 1
+  }
+
+  lifecycle {
+    precondition {
+      condition     = var.database_instance_count >= local.max_instance_number
+      error_message = "Instance number attribute on instance_specific_tags variable cannot be greater than database_instance_count."
+    }
+  }
 }
+
+locals {
+  instance_numbers    = [for tag in var.instance_specific_tags : tag.instance_number]
+  max_instance_number = max(local.instance_numbers...)
+  instances = [for i in range(var.database_instance_count) : {
+    instance_number = i + 1
+    instance_tags   = [for tag in var.instance_specific_tags : tag if tag.instance_number == i + 1]
+    instance_name = try(
+      (tolist([for tag in var.instance_specific_tags : tag.tag_value if tag.instance_number == i + 1 && tag.tag_key == "instance_name"])[0]),
+      ""
+    )
+  }]
+}
+
+

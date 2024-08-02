@@ -214,3 +214,19 @@ variable "kms_key_deletion_window_in_days" {
     error_message = "The 'kms_key_deletion_window_in_days' field must be between 7 and 30 days."
   }
 }
+
+variable "cluster_tags" {
+  description = "A map of tags that will be assigned to the database cluster."
+  type        = map(string)
+  default     = {}
+}
+
+variable "instance_specific_tags" {
+  description = "Instance specific tags to be added to individual instances. This works in conjunction with database_instance_count variable. Provided instance number cannot exceed instance count. You can add a sulfix to the name of the instance by using a tag with key instance_name. In this case, the tag value is going to be added to the instance name."
+  type = list(object({
+    instance_number = number
+    tag_key         = string
+    tag_value       = string
+  }))
+  default = []
+}

@@ -7,6 +7,10 @@ All notable changes to this project will be documented in this file.
 - Support to global cluster
 - Support for monitoring features
 
+## [0.0.7] - 2024-08-01
+
+- Adding the ability to add tags to the cluster, as well as instance_specific_tags.
+
 ## [0.0.6] - 2024-07-30
 
 - Fixing a bug, where the db_name is `null` on the secret when the caller doesn't specify a database to be created. In these cases, the default `postgres` value is going to be added.
