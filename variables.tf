@@ -78,6 +78,21 @@ variable "performance_insights_enabled" {
   default     = false
 }
 
+# variable "performance_insights_kms_key_id" {
+#   type        = string
+#   description = "When performance insights is enabled, and the cluster is encripted using a specific KMS key, this variable's value needs to be that key arn."
+
+#   validation {
+#     condition     = (var.performance_insights_kms_key_id == "" || can(regex("^arn:aws:kms:[a-z0-9-]+:\\d{12}:key/[a-f0-9-]+$", var.performance_insights_kms_key_id)))
+#     error_message = "When performance_insights_enabled is true and the cluster is encripted using a specific key, performance_insights_kms_key_id needs to be a KMS KEY arn."
+#   }
+# }
+variable "performance_insights_retention_period_in_days" {
+  type        = number
+  description = "Number of days to keep performance insights data."
+  default     = 7
+}
+
 variable "enable_postgresql_log" {
   type        = bool
   description = "Whether postgresql logs will be enable for the created cluster."
@@ -196,7 +211,23 @@ variable "monitoring_interval" {
   type        = number
   description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB cluster."
   default     = 0
+
+  validation {
+    condition     = contains([0, 1, 5, 10, 15, 30, 60], var.monitoring_interval)
+    error_message = "The monitoring interval must be one of the following values: 0, 1, 5, 10, 15, 30, 60."
+  }
 }
+
+variable "monitoring_role_arn" {
+  type        = string
+  description = "The IAM role arn to be used to monitor the database instances."
+  default     = ""
+  validation {
+    condition     = (var.monitoring_role_arn == "" || can(regex("^arn:aws:iam::\\d{12}:role\\/[\\w+=,.@-]+$", var.monitoring_role_arn)))
+    error_message = "monitoring_role_arn needs to be a valid IAM role arn."
+  }
+}
+
 
 variable "create_kms_key" {
   type        = bool
@@ -229,4 +260,10 @@ variable "instance_specific_tags" {
     tag_value       = string
   }))
   default = []
+}
+
+variable "preferred_maintenance_window" {
+  description = "Weekly time range during which system maintenance can occur, in (UTC) e.g., wed:04:00-wed:04:30."
+  type = string
+  default = "wed:04:00-wed:04:30"
 }

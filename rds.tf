@@ -47,7 +47,8 @@ resource "aws_rds_cluster" "primary" {
   deletion_protection                 = var.deletion_protection
   kms_key_id                          = var.create_kms_key ? aws_kms_key.cluster_storage_key[0].arn : null
   allow_major_version_upgrade         = var.allow_major_version_upgrade
-  tags                                = var.cluster_tags
+  #preferred_maintenance_window        = var.preferred_maintenance_window
+  tags = var.cluster_tags
   lifecycle {
     ignore_changes = [
       replication_source_identifier
@@ -87,15 +88,26 @@ resource "aws_rds_cluster_instance" "primary" {
   db_subnet_group_name         = var.subnet_group_name
   db_parameter_group_name      = aws_db_parameter_group.aurora_db_parameter_group_p.id
   performance_insights_enabled = var.performance_insights_enabled
-  apply_immediately            = var.apply_changes_immediately
-  auto_minor_version_upgrade   = var.auto_minor_version_upgrade
-  monitoring_interval          = var.monitoring_interval
+  #performance_insights_kms_key_id = var.performance_insights_enabled == true ? aws_kms_key.cluster_storage_key[0].arn : null
+  performance_insights_kms_key_id       = local.performance_insights_kms_key_id
+  performance_insights_retention_period = var.performance_insights_retention_period_in_days
+  apply_immediately                     = var.apply_changes_immediately
+  auto_minor_version_upgrade            = var.auto_minor_version_upgrade
+  monitoring_interval                   = var.monitoring_interval
+  monitoring_role_arn                   = var.monitoring_role_arn
+  # preferred_maintenance_window          = var.preferred_maintenance_window
   tags = {
     for tag in var.instance_specific_tags :
     tag.tag_key => tag.tag_value
     if tag.instance_number == each.key + 1
   }
 
+  # dynamic "performance_insights_kms_key_id" {
+  #   for_each = var.create_kms_key == true && var.performance_insights_enabled == true ? [1] : []
+  #   content {
+  #     performance_insights_kms_key_id = aws_kms_key.cluster_storage_key[0].arn
+  #   }
+  # }
   lifecycle {
     precondition {
       condition     = var.database_instance_count >= local.tags_max_instance_number
@@ -117,4 +129,6 @@ locals {
   }]
 }
 
-
+locals {
+  performance_insights_kms_key_id = (var.performance_insights_enabled && var.create_kms_key) ? aws_kms_key.cluster_storage_key[0].arn : null
+}
