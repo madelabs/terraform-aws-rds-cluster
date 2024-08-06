@@ -7,10 +7,10 @@ All notable changes to this project will be documented in this file.
 - Support to global cluster
 ## [0.0.9] - 2024-08-06
 
-- Adding support to performance insights on encrypted clusters
-- Adding support to Enhanced Monitoring
-- Adding support to choose Maintenance window
-- Adding support to choose backup window
+- Adding support to performance insights on encrypted clusters;
+- Adding support to Enhanced Monitoring;
+- Adding support to choose maintenance window;
+- Adding support to choose backup window;
 
 ## [0.0.8] - 2024-08-02
 
