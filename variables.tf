@@ -78,15 +78,6 @@ variable "performance_insights_enabled" {
   default     = false
 }
 
-# variable "performance_insights_kms_key_id" {
-#   type        = string
-#   description = "When performance insights is enabled, and the cluster is encripted using a specific KMS key, this variable's value needs to be that key arn."
-
-#   validation {
-#     condition     = (var.performance_insights_kms_key_id == "" || can(regex("^arn:aws:kms:[a-z0-9-]+:\\d{12}:key/[a-f0-9-]+$", var.performance_insights_kms_key_id)))
-#     error_message = "When performance_insights_enabled is true and the cluster is encripted using a specific key, performance_insights_kms_key_id needs to be a KMS KEY arn."
-#   }
-# }
 variable "performance_insights_retention_period_in_days" {
   type        = number
   description = "Number of days to keep performance insights data."
@@ -99,7 +90,6 @@ variable "enable_postgresql_log" {
   default     = false
 }
 
-#Security Variables
 variable "db_master_user" {
   type        = string
   description = "User that will be created as a master user on the created cluster."
@@ -142,7 +132,6 @@ variable "secret_deletion_window_in_days" {
     error_message = "The 'secret_deletion_window_in_days' field must be between 7 and 30 days, or 0,that should be used only for tests purposes."
   }
 }
-
 
 variable "aurora_security_group_id" {
   type        = string
@@ -209,7 +198,7 @@ variable "allow_major_version_upgrade" {
 
 variable "monitoring_interval" {
   type        = number
-  description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB cluster."
+  description = "The interval, in seconds, between points when Enhanced Monitoring metrics are collected for the DB cluster instances."
   default     = 0
 
   validation {
@@ -227,7 +216,6 @@ variable "monitoring_role_arn" {
     error_message = "monitoring_role_arn needs to be a valid IAM role arn."
   }
 }
-
 
 variable "create_kms_key" {
   type        = bool
@@ -264,6 +252,12 @@ variable "instance_specific_tags" {
 
 variable "preferred_maintenance_window" {
   description = "Weekly time range during which system maintenance can occur, in (UTC) e.g., wed:04:00-wed:04:30."
-  type = string
-  default = "wed:04:00-wed:04:30"
+  type        = string
+  default     = "wed:04:00-wed:04:30"
+}
+
+variable "preferred_backup_window" {
+  description = "Daily time range during which automated backups are created if automated backups are enabled using the BackupRetentionPeriod parameter.Time in UTC."
+  type        = string
+  default     = "07:00-09:00"
 }
