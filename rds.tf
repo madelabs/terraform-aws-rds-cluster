@@ -47,6 +47,8 @@ resource "aws_rds_cluster" "primary" {
   deletion_protection                 = var.deletion_protection
   kms_key_id                          = var.create_kms_key ? aws_kms_key.cluster_storage_key[0].arn : null
   allow_major_version_upgrade         = var.allow_major_version_upgrade
+  preferred_maintenance_window        = var.preferred_maintenance_window
+  preferred_backup_window             = var.preferred_backup_window
   tags                                = var.cluster_tags
   lifecycle {
     ignore_changes = [
@@ -77,19 +79,24 @@ resource "aws_db_parameter_group" "aurora_db_parameter_group_p" {
 }
 
 resource "aws_rds_cluster_instance" "primary" {
-  publicly_accessible          = var.publicly_accessible
-  for_each                     = { for idx, instance in local.instances : idx => instance }
-  identifier                   = "${local.cluster_identifier}-${each.value.instance_number}${each.value.instance_name != "" ? "-${each.value.instance_name}" : ""}"
-  cluster_identifier           = aws_rds_cluster.primary.id
-  engine                       = aws_rds_cluster.primary.engine
-  engine_version               = var.postgres_version
-  instance_class               = var.instance_class
-  db_subnet_group_name         = var.subnet_group_name
-  db_parameter_group_name      = aws_db_parameter_group.aurora_db_parameter_group_p.id
-  performance_insights_enabled = var.performance_insights_enabled
-  apply_immediately            = var.apply_changes_immediately
-  auto_minor_version_upgrade   = var.auto_minor_version_upgrade
-  monitoring_interval          = var.monitoring_interval
+  publicly_accessible                   = var.publicly_accessible
+  for_each                              = { for idx, instance in local.instances : idx => instance }
+  identifier                            = "${local.cluster_identifier}-${each.value.instance_number}${each.value.instance_name != "" ? "-${each.value.instance_name}" : ""}"
+  cluster_identifier                    = aws_rds_cluster.primary.id
+  engine                                = aws_rds_cluster.primary.engine
+  engine_version                        = var.postgres_version
+  instance_class                        = var.instance_class
+  db_subnet_group_name                  = var.subnet_group_name
+  db_parameter_group_name               = aws_db_parameter_group.aurora_db_parameter_group_p.id
+  performance_insights_enabled          = var.performance_insights_enabled
+  performance_insights_kms_key_id       = var.performance_insights_enabled && var.create_kms_key ? aws_kms_key.cluster_storage_key[0].arn : null
+  performance_insights_retention_period = var.performance_insights_enabled ? var.performance_insights_retention_period_in_days : null
+  apply_immediately                     = var.apply_changes_immediately
+  auto_minor_version_upgrade            = var.auto_minor_version_upgrade
+  monitoring_interval                   = var.monitoring_interval
+  monitoring_role_arn                   = var.monitoring_role_arn
+  preferred_maintenance_window          = var.preferred_maintenance_window
+
   tags = {
     for tag in var.instance_specific_tags :
     tag.tag_key => tag.tag_value
@@ -116,5 +123,3 @@ locals {
     )
   }]
 }
-
-

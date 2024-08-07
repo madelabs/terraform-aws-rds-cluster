@@ -5,9 +5,14 @@
 #Example 1
 module "example_project" {
   source                              = "madelabs/rds-cluster/aws"
-  version                             = "0.0.8"
+  version                             = "0.0.9"
   generate_password                   = true
   env                                 = "dev"
+  performance_insights_enabled        = true
+  monitoring_interval                 = 15
+  monitoring_role_arn                 = "some-role-arn"
+  preferred_backup_window             = "09:00-11:00"
+  preferred_maintenance_window        = "sun:04:00-sun:04:30"
   aurora_security_group_id            = "sg-0fb4ba8549e60d174"
   instance_class                      = "db.t3.medium"
   subnet_group_name                   = "default"
@@ -77,7 +82,7 @@ resource "aws_secretsmanager_secret_version" "initial_secret" {
 
 module "example_project_2" {
   source                              = "madelabs/rds-cluster/aws"
-  version                             = "0.0.8"
+  version                             = "0.0.9"
   generate_password                   = false
   env                                 = "dev"
   aurora_security_group_id            = "sg-0fb4ba8549e60d174"
