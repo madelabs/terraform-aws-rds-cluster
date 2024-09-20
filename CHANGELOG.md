@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 - Support to global cluster
+
+## [0.0.10] - 2024-09-20
+
+- Adding support to auto-scaling;
+
 ## [0.0.9] - 2024-08-06
 
 - Adding support to performance insights on encrypted clusters;

@@ -14,6 +14,8 @@ It gets a list of inputs, and creates an Aurora Postgres Cluster, with a configu
 There is a naming convention for the created resources, and the caller is allowed to provide some prefixes and suffixes, that are used to build the names.
 The caller can also choose between providing a password through an AWS Secrets Manager Secret, or let the module generate a password for it.
 
+It supports Enhanced Monitoring, performance insights and auto-scale.
+
 ![PlantUML model](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/madelabs/terraform-aws-rds-cluster/main/docs/diagram.puml)
 
 <!-- BEGIN_TF_DOCS -->

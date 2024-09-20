@@ -261,3 +261,60 @@ variable "preferred_backup_window" {
   type        = string
   default     = "07:00-09:00"
 }
+
+variable "enable_auto_scale" {
+  description = "Whether enable or not the auto-scale feature."
+  type        = bool
+  default     = false
+}
+
+variable "auto_scale_min_capacity" {
+  description = "The minimum capacity, i.e. number of instances that will provided by the auto-scale, when enable_auto_scale is true."
+  type        = number
+  default     = 1
+
+  validation {
+    condition     = var.auto_scale_min_capacity >= 1 && var.auto_scale_min_capacity <= 15
+    error_message = "auto_scale_min_capacity must be between 1 and 15."
+  }
+}
+
+variable "auto_scale_max_capacity" {
+  description = "The maximum capacity, i.e. number of instances that will provided by the auto-scale, when enable_auto_scale is true."
+  type        = number
+  default     = 5
+
+  validation {
+    condition     = var.auto_scale_max_capacity >= 1 && var.auto_scale_max_capacity <= 15
+    error_message = "auto_scale_max_capacity must be between 1 and 15."
+  }
+}
+
+variable "auto_scale_metric" {
+  description = "Defines the metric to be used when enable_auto_scale is true. The possible values are RDSReaderAverageCPUUtilization and RDSReaderAverageDatabaseConnections."
+  type        = string
+  default     = "RDSReaderAverageCPUUtilization"
+
+  validation {
+    condition     = var.auto_scale_metric == "RDSReaderAverageCPUUtilization" || var.auto_scale_metric == "RDSReaderAverageDatabaseConnections"
+    error_message = "auto_scale_metric must be either RDSReaderAverageCPUUtilization or RDSReaderAverageDatabaseConnections."
+  }
+}
+
+variable "target_value_for_metric" {
+  description = "The target value for auto_scale_metric. If auto_scale_metric is RDSReaderAverageCPUUtilization, this number is the target percentage of CPU utilization. Let's say target_value_for_metric is 70 and auto_scale_metric is RDSReaderAverageCPUUtilization. If there is a situation where the average of cpu utilization is higher than 70%, RDS is going to scale out (increase the number of instances, up to auto_scale_max_capacity) in order to make the cpu utilization goes down. When auto_scale_metric RDSReaderAverageDatabaseConnections is RDSReaderAverageDatabaseConnections, this value represents tha target number of connections. If the average number of connections is higher, RDS is going to scale out."
+  default     = 70
+  type        = number
+}
+
+variable "scale_in_cooldown" {
+  description = "The number of seconds to wait, after an scale in operation, before reducing even more the capacity, i.e., the number of available instances"
+  type        = number
+  default     = 300
+}
+
+variable "scale_out_cooldown" {
+  description = "The number of seconds to wait, after an scale out operation, before increasing even more the capacity, i.e., the number of available instances"
+  type        = number
+  default     = 300
+}
