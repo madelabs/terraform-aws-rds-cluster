@@ -12,7 +12,7 @@ resource "aws_appautoscaling_policy" "aurora_scaling_policy" {
   name               = "${var.auto_scale_metric} policy"
   service_namespace  = "rds"
   resource_id        = aws_appautoscaling_target.aurora_scaling_target[0].resource_id
-  scalable_dimension = aws_appautoscaling_target.aurora_scaling_target.scalable_dimension
+  scalable_dimension = aws_appautoscaling_target.aurora_scaling_target[0].scalable_dimension
   policy_type        = "TargetTrackingScaling"
   target_tracking_scaling_policy_configuration {
     predefined_metric_specification {
