@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 - Support to global cluster
+## [0.0.11] - 2024-10-02
+
+- Removing special charactere from the generated password. Rds does not accept some special characteres, and this can cause errors depending on the generated password;
 
 ## [0.0.10] - 2024-09-20
 
