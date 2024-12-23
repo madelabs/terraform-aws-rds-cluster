@@ -318,3 +318,33 @@ variable "scale_out_cooldown" {
   type        = number
   default     = 300
 }
+
+variable "allocated_storage" {
+  type        = number
+  description = "The amount of storage in gibibytes (GiB) to allocate to each DB instance in the Multi-AZ DB cluster"
+  default = null
+}
+
+variable "db_cluster_instance_class" {
+  type        = string
+  description = "To be provided only for multi-AZ clusters. The compute and memory capacity of each DB instance in the Multi-AZ DB cluster, for example db.m6g.xlarge. Multi-AZ DB cluster deployments are supported for the following DB instance classes: db.m5d, db.m6gd, db.m6id, db.m6idn, db.r5d, db.r6gd, db.x2iedn, db.r6id, and db.r6idn, and db.c6gd."
+  default = null
+}
+
+variable "iops" {
+  type        = string
+  description = "Amount of Provisioned IOPS (input/output operations per second) to be initially allocated for each DB instance in the Multi-AZ DB cluster. For information about valid Iops values, see Amazon RDS Provisioned IOPS storage to improve performance in the Amazon RDS User Guide. (This setting is required to create a Multi-AZ DB cluster). Must be a multiple between .5 and 50 of the storage amount for the DB cluster."
+  default = null
+}
+
+variable "storage_type" {
+  type        = string
+  description = "(Optional, Required for Multi-AZ DB cluster) (Forces new for Multi-AZ DB clusters) Specifies the storage type to be associated with the DB cluster. For Aurora DB clusters, storage_type modifications can be done in-place. For Multi-AZ DB Clusters, the iops argument must also be set. Valid values are: \"\", aurora-iopt1 (Aurora DB Clusters); io1, io2 (Multi-AZ DB Clusters). Default: \"\" (Aurora DB Clusters); io1 (Multi-AZ DB Clusters)."
+  default = ""
+}
+
+variable "availability_zones" {
+  type        = set(string)
+  description = "List of EC2 Availability Zones for the DB cluster storage where DB cluster instances can be created. RDS automatically assigns 3 AZs if less than 3 AZs are configured, which will show as a difference requiring resource recreation next Terraform apply. "
+  default = []
+}

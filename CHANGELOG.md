@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 ## Unreleased
 
 - Support to global cluster
+## [0.0.12] - 2024-12-23
+
+- Adding new properties to allow multi-az clusters
+
 ## [0.0.11] - 2024-10-02
 
 - Removing special charactere from the generated password. Rds does not accept some special characteres, and this can cause errors depending on the generated password;

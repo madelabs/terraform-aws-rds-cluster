@@ -25,31 +25,36 @@ resource "aws_rds_cluster_parameter_group" "aurora_cluster_parameter_group_p" {
 }
 
 resource "aws_rds_cluster" "primary" {
+  allocated_storage                   = var.allocated_storage
+  allow_major_version_upgrade         = var.allow_major_version_upgrade
+  apply_immediately                   = var.apply_changes_immediately
+  availability_zones                  = var.availability_zones
+  backup_retention_period             = var.backup_retention_days
   cluster_identifier                  = local.cluster_identifier
-  engine                              = local.supported_engine
-  engine_version                      = var.postgres_version
-  db_subnet_group_name                = var.subnet_group_name
-  port                                = var.db_port
   database_name                       = var.database_name
-  master_username                     = var.db_master_user
-  master_password                     = local.db_password
+  db_cluster_instance_class           = var.db_cluster_instance_class
   db_cluster_parameter_group_name     = aws_rds_cluster_parameter_group.aurora_cluster_parameter_group_p.id
   db_instance_parameter_group_name    = aws_db_parameter_group.aurora_db_parameter_group_p.id
-  backup_retention_period             = var.backup_retention_days
-  apply_immediately                   = var.apply_changes_immediately
-  skip_final_snapshot                 = var.skip_final_snapshot
-  final_snapshot_identifier           = var.final_snapshot_identifier
-  snapshot_identifier                 = var.snapshot_identifier
-  vpc_security_group_ids              = [var.aurora_security_group_id]
-  iam_database_authentication_enabled = var.iam_database_authentication_enabled
-  enabled_cloudwatch_logs_exports     = local.logs_set
-  storage_encrypted                   = var.storage_encrypted
+  db_subnet_group_name                = var.subnet_group_name
   deletion_protection                 = var.deletion_protection
+  enabled_cloudwatch_logs_exports     = local.logs_set
+  engine                              = local.supported_engine
+  engine_version                      = var.postgres_version
+  final_snapshot_identifier           = var.final_snapshot_identifier
+  iam_database_authentication_enabled = var.iam_database_authentication_enabled
+  iops                                = var.iops
   kms_key_id                          = var.create_kms_key ? aws_kms_key.cluster_storage_key[0].arn : null
-  allow_major_version_upgrade         = var.allow_major_version_upgrade
-  preferred_maintenance_window        = var.preferred_maintenance_window
+  master_password                     = local.db_password
+  master_username                     = var.db_master_user
+  port                                = var.db_port
   preferred_backup_window             = var.preferred_backup_window
+  preferred_maintenance_window        = var.preferred_maintenance_window
+  skip_final_snapshot                 = var.skip_final_snapshot
+  snapshot_identifier                 = var.snapshot_identifier
+  storage_encrypted                   = var.storage_encrypted
+  storage_type                        = var.storage_type
   tags                                = var.cluster_tags
+  vpc_security_group_ids              = [var.aurora_security_group_id]
   lifecycle {
     ignore_changes = [
       replication_source_identifier
