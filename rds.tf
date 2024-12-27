@@ -101,7 +101,7 @@ resource "aws_rds_cluster_instance" "primary" {
   monitoring_interval                   = var.monitoring_interval
   monitoring_role_arn                   = var.monitoring_role_arn
   preferred_maintenance_window          = var.preferred_maintenance_window
-
+  availability_zone                     = each.value.instance_az
   tags = {
     for tag in var.instance_specific_tags :
     tag.tag_key => tag.tag_value
@@ -126,5 +126,6 @@ locals {
       (tolist([for tag in var.instance_specific_tags : tag.tag_value if tag.instance_number == i + 1 && tag.tag_key == "instance_name"])[0]),
       ""
     )
+    instance_az = var.availability_zones[i % length(var.availability_zones)]
   }]
 }
