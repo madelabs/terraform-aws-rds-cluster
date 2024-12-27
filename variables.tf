@@ -344,7 +344,7 @@ variable "storage_type" {
 }
 
 variable "availability_zones" {
-  type        = set(string)
+  type        = list(string)
   description = "List of EC2 Availability Zones for the DB cluster storage where DB cluster instances can be created. RDS automatically assigns 3 AZs if less than 3 AZs are configured, which will show as a difference requiring resource recreation next Terraform apply. "
   default     = ["us-east-1a", "us-east-1b", "us-east-1d"]
 }
